@@ -112,7 +112,7 @@
             const ciudad = document.getElementById('ref-ciudad').value.trim();
 
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
-            const linkGenerado = `https://dunigluxury.github.io/d-unigluxury/?ref=${codigoGenerado}`; 
+            const linkGenerado = `https://dunigluxury.github.io/dunig-luxury/?ref=${codigoGenerado}`; 
 
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
