@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Referidos - D'UNIG LUXURY</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@200;300;400;500;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: radial-gradient(circle at 50% 0%, #1c1917 0%, #0c0a09 100%); background-color: #030202; }
+        .font-futurista { font-family: 'Orbitron', sans-serif; }
+        .glow-gold { box-shadow: 0 0 25px rgba(229, 193, 88, 0.15); }
+        .text-gold { color: #e5c158; text-shadow: 0 0 12px rgba(229, 193, 88, 0.2); }
+        .glass-panel { background: linear-gradient(135deg, rgba(28, 25, 23, 0.45) 0%, rgba(12, 10, 9, 0.6) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.02); }
+        .grid-bg { background-image: linear-gradient(rgba(229, 193, 88, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(229, 193, 88, 0.01) 1px, transparent 1px); background-size: 32px 32px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #e5c158; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-stone-200 antialiased min-h-screen flex flex-col justify-between grid-bg relative">
+
+    <header class="bg-black/40 backdrop-blur-xl border-b border-stone-900/80 sticky top-0 z-40 px-4">
+        <div class="max-w-4xl mx-auto h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="border border-amber-500/30 p-2 rounded-xl bg-stone-950/80 glow-gold">
+                    <i data-lucide="users" class="w-6 h-6 text-amber-400"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-black tracking-[0.15em] text-white font-futurista">
+                        D'UNIG <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-500">LUXURY</span>
+                    </h1>
+                    <p class="text-[8px] text-amber-500/70 uppercase tracking-[0.25em] font-bold font-futurista">
+                        PROGRAMA DE REFERIDOS VIP
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-xl w-full mx-auto px-4 py-12 flex-grow flex items-center justify-center relative z-10">
+        <div class="glass-panel p-8 rounded-3xl shadow-2xl border border-stone-900 w-full space-y-6">
+            
+            <div class="text-center space-y-2">
+                <span class="text-[10px] uppercase tracking-[0.2em] font-futurista font-black text-amber-400 bg-amber-500/5 px-3 py-1 rounded-md border border-amber-500/10">REGISTRO OFICIAL</span>
+                <h2 class="text-2xl font-black font-futurista text-white tracking-wide uppercase">Nuevo Referido</h2>
+                <p class="text-xs text-stone-400">Ingresa tus datos para unirte a la red y obtener tu enlace exclusivo.</p>
+            </div>
+
+            <div id="banner-patrocinador" class="hidden bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-center">
+                <p class="text-[10px] text-amber-400 font-futurista tracking-wider">Estás siendo invitado por el código: <span id="txt-patrocinador" class="font-bold"></span></p>
+            </div>
+
+            <form id="form-referido" onsubmit="registrarReferido(event)" class="space-y-4">
+                
+                <div class="space-y-1.5">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Nombre de Referido</label>
+                    <input type="text" id="ref-nombre" required placeholder="Ej. Carlos Pérez" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-medium">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Cédula de Identidad</label>
+                    <input type="text" id="ref-cedula" required placeholder="Ej. V-26000000" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Número de Teléfono</label>
+                    <input type="tel" id="ref-telefono" required placeholder="Ej. 04120000000" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Ciudad</label>
+                    <input type="text" id="ref-ciudad" required placeholder="Ej. Mérida" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-medium">
+                </div>
+
+                <button type="submit" id="btn-enviar" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-futurista font-black py-4 px-6 rounded-xl text-xs uppercase tracking-[0.15em] flex items-center justify-center gap-2 cursor-pointer shadow-lg transition-all duration-300 mt-6">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-stone-950 bg-black/60 p-4 text-center text-[10px] text-stone-600 font-mono tracking-widest">© 2026 D'UNIG LUXURY ECOSISTEMA. TODOS LOS DERECHOS RESERVADOS.</footer>
+
+    <script>
+        const SUPABASE_URL = "https://cmaishgahyzlhszwaozg.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtYWlzaGdhaHl6bGhzendhb3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MjMxMzEsImV4cCI6MjEwMDQ5OTEzMX0.8JVrpQKocnyZa3qLxsX9ZxjygYy4QY3kp_VSvrL1qNQ"; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            lucide.createIcons(); 
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            if (ref) {
+                document.getElementById('txt-patrocinador').innerText = ref;
+                document.getElementById('banner-patrocinador').classList.remove('hidden');
+            }
+        });
+
+        async function registrarReferido(event) {
+            event.preventDefault();
+
+            const btn = document.getElementById('btn-enviar');
+            btn.disabled = true;
+            btn.innerText = "REGISTRANDO...";
+
+            const nombre = document.getElementById('ref-nombre').value.trim();
+            const cedula = document.getElementById('ref-cedula').value.trim();
+            const telefono = document.getElementById('ref-telefono').value.trim();
+            const ciudad = document.getElementById('ref-ciudad').value.trim();
+
+            const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
+            const linkGenerado = `https://dunigluxury.github.io/d-unigluxury/?ref=${codigoGenerado}`; 
+
+            const { data, error } = await supabaseClient.from('referidos').insert([{
+                nombre: nombre,
+                cedula: cedula,
+                telefono: telefono,
+                ciudad: ciudad,
+                codigo_referido: codigoGenerado,
+                link_referido: linkGenerado
+            }]);
+
+            if (error) {
+                console.error("Error de Supabase:", error);
+                alert("Error técnico: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
+                lucide.createIcons();
+            } else {
+                alert(`¡Registro exitoso!\nTu código asignado es: ${codigoGenerado}\nTu enlace es: ${linkGenerado}`);
+                document.getElementById('form-referido').reset();
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>
